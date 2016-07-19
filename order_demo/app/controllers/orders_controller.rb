@@ -68,6 +68,7 @@ class OrdersController < ApplicationController
         new_item.price = params[:price]
         new_item.order_id = order.id
         new_item.save!
+        render :json => {:in_stock => response_data["in_stock"]}
       end
     end
   end

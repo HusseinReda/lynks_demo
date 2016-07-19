@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Stream#show</h1>
+<p>Find me in app/views/stream/show.html.erb</p>
+
+<% @item_array.each do |item|%>
+	<table>
+		<tr>
+			<td>
+				<%= item['name']%>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<%= item['thumbnail']%>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<%= item['price']%>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<%= link_to "Add to Cart" , {:controller => 'stream', :action => 'add_to_cart', :user_id => 1, :item_id => item['id'], :quantity => 1, :price => item['price']} %>
+			</td>
+		</tr>
+	</table>
+	<br/>
+<% end %>

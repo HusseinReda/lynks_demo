@@ -12,7 +12,9 @@ class OrdersController < ApplicationController
   # GET /orders/1
   # GET /orders/1.json
   def show
-    render json: @order
+      @cart_items = CartItem.where({:order_id => @order.id })
+
+      render json: @cart_items
   end
 
   # POST /orders

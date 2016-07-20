@@ -1,4 +1,14 @@
 Rails.application.routes.draw do
+  get 'users/new'
+
+  post 'users/signup'
+
+  get 'users/login'
+
+  get 'users/logout'
+
+  get 'users/edit'
+
   get 'stream/show'
   get 'stream/add_to_cart', to: 'stream#add_to_cart'
 
@@ -6,7 +16,7 @@ Rails.application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  # root 'welcome#index'
+   root 'stream#show'
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

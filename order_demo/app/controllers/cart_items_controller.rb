@@ -15,6 +15,13 @@ class CartItemsController < ApplicationController
     render json: @cart_item
   end
 
+  # GET /cart_items/exist
+  def exist
+    home_cart_items = CartItem.where(["order_id = ? and item_id = ?", params['order_id'], params['item_id']])
+    
+    render json: home_cart_items
+  end
+
   # POST /cart_items
   # POST /cart_items.json
   def create

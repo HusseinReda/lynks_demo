@@ -12,9 +12,7 @@ class OrdersController < ApplicationController
   # GET /orders/1
   # GET /orders/1.json
   def show
-      @cart_items = CartItem.where({:order_id => @order.id })
-
-      render json: @cart_items
+    render json: @order
   end
 
   # POST /orders
@@ -52,24 +50,23 @@ class OrdersController < ApplicationController
   def add_item
     order = Order.where({:status =>'current', :user_id => params[:user_id]}).first
     if order.nil?
-      order = Order.new
-      order.status = 'current'
-      order.total = 0.0
-      order.user_id = params[:user_id]
-      order.save!
+      Order.create( :status => 'current', total => 0.0, user_id => params[:user_id] )
     end
-    response = RestClient.get 'http://localhost:3000/items/query', {:params => {:item_id => params[:item_id]}}
+    response = RestClient.get 'http://localhost:3001/items/query', {:params => {:item_id => params[:item_id]}}
     if response.code != 200
       puts 'eh da'
     else
       response_data = JSON.parse response
       if response_data["in_stock"] && response_data["in_stock"] == true
-        new_item = CartItem.new
-        new_item.item_id = params[:item_id]
-        new_item.quantity = params[:quantity]
-        new_item.price = params[:price]
-        new_item.order_id = order.id
-        new_item.save!
+        puts "HHHHHHHHHHHHHHHHHHH    ", cart_item_response
+        cart_item_response = RestClient.get 'http://localhost:3002/cart_items/exist', {:params => {:order_id => order.id, :item_id => params[:item_id]}}
+        puts "HHHHHHHHHHHHHHHHHHH    ", cart_item_response
+        # cart_item = JSON.parse( cart_item_response )
+        # if cart_item.empty
+        #   RestClient.put 'http://localhost:3002/cart_item/#{cart_item[\'cart_items\'][0][\'id\']}', {:params => {:item_id => params[:item_id], :quantity => cart_item['cart_items'][0]['quantity'] + params[:quantity], :price => params[:price], :order_id => order.id }}
+        # else
+          CartItem.create( :item_id => params[:item_id], :quantity => params[:quantity], :price => params[:price], :order_id => order.id)
+        # end
         render :json => {:in_stock => response_data["in_stock"]}
       end
     end

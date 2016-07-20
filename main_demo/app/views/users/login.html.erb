@@ -1,2 +1,13 @@
 <h1>Users#login</h1>
-<p>Find me in app/views/users/login.html.erb</p>
+<p id="notice"><%= notice %></p>
+<%= form_tag users_loginSubmission_path do %>
+	<div class="field">
+		<%= label_tag :email %> <br/>
+		<%= text_field_tag :email , params[:email]%>
+	</div>
+	<div class="field">
+		<%= label_tag :password %> <br/>
+		<%= password_field_tag :password , params[:password]%>
+	</div>
+	<div class="actions"> <%= submit_tag "Log in" %> </div>
+<% end %>

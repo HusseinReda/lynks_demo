@@ -16,24 +16,44 @@ class UsersController < ApplicationController
           :user_name => params[:user][:user_name]
         }
       }.to_json
-    response = RestClient.post AUTH_URL+'signup', request_body ,:content_type => :json , :accept => :json
-      
-    
+    begin
+      response = RestClient.post AUTH_URL+'signup', request_body ,:content_type => :json , :accept => :json
+      if response.code == 201
+        redirect_to users_login_path
+      end
+    rescue => ex
+      respond_to do |format|
+        format.html { redirect_to :back, notice: "Sign up invalid, #{ex.message}" }
+      end
+    end
   end
 
   def login
-    response = RestClient.get AUTH_URL+'login' ,{:email => params[:email] , :password => params[:password]}
-    response_body = JOSN.parse(response)
-    if response_body[:error_msg] == "log in successful"
+  end
+
+  def login_submission
+    response = RestClient.get AUTH_URL+'login' ,{:params=>{:email => params[:email] , :password => params[:password]}}
+    response_body = JSON.parse(response)
+    if (response_body['error_msg'] == 'log in successful')
       session[:user_id] = response_body[:user_id]
-      format.html { redirect_to STREAM_URL+'show', notice: 'Log in successful' }
+      session[:email] = params[:email]
+      respond_to do |format|
+        format.html { redirect_to STREAM_URL+'show', notice: "logged in successfully" }
+      end
     else
-      format.html { redirect_to :back, notice: 'Invalid email or password' }      
+      respond_to do |format|
+        format.html { redirect_to :back, notice: "Invalid email or password" }
+      end
     end
+
   end
 
   def logout
     session[:user_id] = nil
+    session[:email] = nil
+    respond_to do |format|
+      format.html { redirect_to :back, notice: "logged out successfully" }
+    end
   end
 
   def edit

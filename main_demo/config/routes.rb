@@ -10,7 +10,11 @@ Rails.application.routes.draw do
   get 'users/edit'
 
   get 'stream/show'
+
   get 'stream/add_to_cart', to: 'stream#add_to_cart'
+
+  post 'users/loginSubmission', to: 'users#login_submission'
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

@@ -10,8 +10,8 @@ class ApplicationController < ActionController::Base
   CART_URL = "http://localhost:3004/carts/"
   REVIEW_URL = "http://localhost:3005/reviews/"
   private
-	def current_user
-		@current_user ||= User.find(session[:user_id]) if session[:user_id]
-
+	def current_user_email
+		@current_user_email ||= session[:email] if session[:email]
 	end 
+  helper_method :current_user_email
 end

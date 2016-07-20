@@ -11,16 +11,19 @@
 <nav class="navbar navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a class="navbar-brand" href="#">WebSiteName</a>
+      <a class="navbar-brand" href="/stream/show">WebSiteName</a>
     </div>
     <ul class="nav navbar-nav">
       <li class="active"><a href="#">Home</a></li>
-      <li><a href="#">Page 1</a></li>
-      <li><a href="#">Page 2</a></li> 
-      <li><a href="#">Page 3</a></li> 
     </ul>
     <ul class="nav navbar-nav navbar-right">
-     	<%= link_to "sign up", users_new_path %>
+    <% if current_user_email %>
+      <p class="navbar-text">Signed in as  <%= current_user_email  %></p>
+      <li> <%= link_to "logout", users_logout_path %> </li>
+    <%else%>
+     	 <li> <%= link_to "sign up", users_new_path %> </li>
+       <li> <%= link_to "log in", users_login_path %> </li>
+    <%end%>
     </ul>
   </div>
 </nav>

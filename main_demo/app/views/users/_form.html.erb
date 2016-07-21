@@ -1,5 +1,18 @@
 <%= form_for :user, url: users_signup_path do |f| %>
-
+  <% if $response_body %>
+    <% if $response_body['created'] %>
+    <% else %>
+      <div id="error_explanation">
+        <h2><%= pluralize($response_body.count, "error") %> prohibited this user from being saved:</h2>
+        <ul>
+        <% $response_body.each do |key,value | %>
+          <li><%= "#{key}: #{value[0]}" %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+  <% end %>
+  <% $response_body = nil %>
   <div class="field">
     <%= f.label :first_name %><br>
     <%= f.text_field :first_name %>
@@ -7,18 +20,6 @@
   <div class="field">
     <%= f.label :last_name %><br>
     <%= f.text_field :last_name %>
-  </div>
-  <div class="field">
-    <%= f.label :gender %><br>
-    <%= f.check_box :gender %>
-  </div>
-  <div class="field">
-    <%= f.label :security_question %><br>
-    <%= f.text_field :security_question %>
-  </div>
-  <div class="field">
-    <%= f.label :answer %><br>
-    <%= f.text_area :answer %>
   </div>
   <div class="field">
     <%= f.label :email %><br>
@@ -29,16 +30,26 @@
     <%= f.text_field :password %>
   </div>
   <div class="field">
+    <%= f.label :security_question %><br>
+    <%= f.select(:security_question, [["What is your father's middle name ?", 'What is your fathers middle name ?'], ["What is the model of your first car?",'What is the model of your first car?'], ["What is the name of your first pet?",'What is the name of your first pet?'], ["What is the name of your high school?",'What is the name of your high school?'] ] ) %>
+  </div>
+  <div class="field">
+    <%= f.label :answer %><br>
+    <%= f.text_area :answer %>
+  </div>
+  <div class="field">
+    <%= radio_button_tag(:gender, "male" , checked = true) %>
+    <%= label_tag(:gender_type, "Male") %>
+    <%= radio_button_tag(:gender, "female") %>
+    <%= label_tag(:gender_type, "Female") %>
+  </div>
+  <div class="field">
     <%= f.label :address %><br>
     <%= f.text_area :address %>
   </div>
   <div class="field">
     <%= f.label :phone_number %><br>
-    <%= f.number_field :phone_number %>
-  </div>
-  <div class="field">
-    <%= f.label :user_name %><br>
-    <%= f.text_field :user_name %>
+    <%= f.text_field :phone_number %>
   </div>
   <div class="actions">
     <%= f.submit %>

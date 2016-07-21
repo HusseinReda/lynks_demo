@@ -21,9 +21,9 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     if @user.save
-      render json: @user, status: :created, location: @user
+      render json: {"created"=>"successful"}, status: :created, location: @user
     else
-      render json: @user.errors, status: :unprocessable_entity
+      render json: @user.errors
     end
   end
 
@@ -54,6 +54,6 @@ class UsersController < ApplicationController
     end
 
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :gender, :security_question, :answer, :email, :password, :address, :phone_number, :user_name)
+      params.require(:user).permit(:first_name, :last_name, :email, :password, :security_question, :answer, :gender, :address, :phone_number)
     end
 end

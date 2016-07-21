@@ -3,6 +3,11 @@ class UsersController < ApplicationController
   end
 
   def signup
+    if current_user_email
+      respond_to do |format|
+        format.html { redirect_to STREAM_URL+'show', notice: "logged in successfully" } and return 
+      end
+    end
     request_body = { :user =>{
           :first_name => params[:user][:first_name],
           :last_name => params[:user][:last_name],
@@ -10,22 +15,21 @@ class UsersController < ApplicationController
           :security_question => params[:user][:security_question],
           :answer => params[:user][:answer],
           :email => params[:user][:email],
-          :password => params[:user][:password],
+          :password => params[:user][:password] ,
           :address => params[:user][:address],
           :phone_number => params[:user][:phone_number],
           :user_name => params[:user][:user_name]
         }
-      }.to_json
-    begin
-      response = RestClient.post AUTH_URL+'signup', request_body ,:content_type => :json , :accept => :json
-      if response.code == 201
-        redirect_to users_login_path
-      end
-    rescue => ex
-      respond_to do |format|
-        format.html { redirect_to :back, notice: "Sign up invalid, #{ex.message}" }
-      end
+      }.to_json 
+    
+    response = RestClient.post AUTH_URL+'signup', request_body ,:content_type => :json , :accept => :json
+    $response_body=JSON.parse(response)
+    if response.code == 201
+      redirect_to users_login_path
+    else
+      redirect_to :back, notice: "Sign up invalid"
     end
+    
   end
 
   def login

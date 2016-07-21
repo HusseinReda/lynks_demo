@@ -1,5 +1,15 @@
 <%= form_for :user, url: users_signup_path do |f| %>
-
+  <% if $response_body %>
+    <div id="error_explanation">
+      <h2><%= pluralize($response_body.count, "error") %> prohibited this user from being saved:</h2>
+      <ul>
+      <% $response_body.each do |key,value | %>
+        <li><%= "#{key}: #{value[0]}" %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <% $response_body = nil %>
   <div class="field">
     <%= f.label :first_name %><br>
     <%= f.text_field :first_name %>
@@ -14,7 +24,7 @@
   </div>
   <div class="field">
     <%= f.label :security_question %><br>
-    <%= f.text_field :security_question %>
+    <%= f.select(:security_question, [["What is your father's middle name ?", 'What is your fathers middle name ?'], ["What is the model of your first car?",'What is the model of your first car?'], ["What is the name of your first pet?",'What is the name of your first pet?'], ["What is the name of your high school?",'What is the name of your high school?'] ] ) %>
   </div>
   <div class="field">
     <%= f.label :answer %><br>

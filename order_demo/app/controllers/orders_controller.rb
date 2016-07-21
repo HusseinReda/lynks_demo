@@ -47,36 +47,22 @@ class OrdersController < ApplicationController
     head :no_content
   end
 
-  def add_item
-    order = Order.where({:status =>'current', :user_id => params[:user_id]}).first
+  def get_order_id
+    order = Order.where({:status => 'current', :user_id => params[:user_id]}).first
     if order.nil?
-      Order.create( :status => 'current', total => 0.0, user_id => params[:user_id] )
+      order = Order.create( :status => 'current', :total => 0.0, :user_id => params[:user_id] )
     end
-    response = RestClient.get 'http://localhost:3001/items/query', {:params => {:item_id => params[:item_id]}}
-    if response.code != 200
-      puts 'eh da'
-    else
-      response_data = JSON.parse response
-      if response_data["in_stock"] && response_data["in_stock"] == true
-        puts "HHHHHHHHHHHHHHHHHHH    ", cart_item_response
-        cart_item_response = RestClient.get 'http://localhost:3002/cart_items/exist', {:params => {:order_id => order.id, :item_id => params[:item_id]}}
-        puts "HHHHHHHHHHHHHHHHHHH    ", cart_item_response
-        # cart_item = JSON.parse( cart_item_response )
-        # if cart_item.empty
-        #   RestClient.put 'http://localhost:3002/cart_item/#{cart_item[\'cart_items\'][0][\'id\']}', {:params => {:item_id => params[:item_id], :quantity => cart_item['cart_items'][0]['quantity'] + params[:quantity], :price => params[:price], :order_id => order.id }}
-        # else
-          CartItem.create( :item_id => params[:item_id], :quantity => params[:quantity], :price => params[:price], :order_id => order.id)
-        # end
-        render :json => {:in_stock => response_data["in_stock"]}
-      end
-    end
+    render :json => { :order_id => order.id }
   end
 
-  def remove_item
-    order = Order.where({:status => 'current', :user_id => params[:user_id]}).first
-    if order
-      item = CartItem.destroy_all({:order_id => order.id, :item_id => params[:item_id]})
+  def order_history
+    orders = Order.where({:status => 'purchased', :user_id => params[:user_id]})
+    orders_history = []
+    orders.each do |order|
+      orders_history_resp = RestClient.get CART_URL + "old_items/#{order.id}", {:params => {:order_id => order.id}}
+      orders_history << JSON.parse( orders_history_resp )
     end
+    render :json => { :orders_history => orders_history }
   end
 
   def purchase
@@ -86,7 +72,7 @@ class OrdersController < ApplicationController
       item_array = CartItem.where(:order_id => order.id)
       item_array.each do |item|
         puts item.item_id
-        response = RestClient.put "http://localhost:3000/items/#{item.item_id}", {:consume => 'true'}
+        response = RestClient.put STORE_URL + "#{item.item_id}", {:consume => 'true'}
       end
       order.save!
     end

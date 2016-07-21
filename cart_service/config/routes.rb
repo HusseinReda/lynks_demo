@@ -1,11 +1,10 @@
 Rails.application.routes.draw do
+  post '/cart/add_item', to: 'cart_items#add_item'
+  get '/cart/items/:id', to: 'cart_items#view_cart_items'
+  get '/cart/old_items/:id', to: 'cart_items#get_old_cart_items'
+  delete '/cart/remove_item', to: 'cart_items#remove_item'
 
-  get '/orders/get_order', to: 'orders#get_order_id'
-  get '/orders/order_history', to: 'orders#order_history'
-  post '/orders/purchase', to: 'orders#purchase'
-
-  resources :orders, except: [:new, :edit]
-
+  # resources :cart_items
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 

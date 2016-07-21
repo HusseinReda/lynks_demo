@@ -5,7 +5,7 @@ class StreamController < ApplicationController
   end
 
   def add_to_cart
-  	RestClient.post ORDERS_URL+'add_item', {:user_id => params[:user_id], :item_id => params[:item_id], :quantity => params[:quantity], :price => params[:price]}
+  	RestClient.post CART_URL+'add_item', {:user_id => params[:user_id], :item_id => params[:item_id], :quantity => params[:quantity], :price => params[:price]}
   	#if response.code != 200
   	#	response_data = JSON.parse response
   	#	if response_data["in_stock"] && response_data["in_stock"] == true

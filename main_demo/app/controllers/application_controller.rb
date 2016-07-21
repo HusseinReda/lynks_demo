@@ -7,11 +7,11 @@ class ApplicationController < ActionController::Base
   AUTH_URL = "http://localhost:3001/"
   ORDERS_URL = "http://localhost:3002/orders/"
   STORE_URL = "http://localhost:3003/"
-  CART_URL = "http://localhost:3004/carts/"
+  CART_URL = "http://localhost:3004/cart/"
   REVIEW_URL = "http://localhost:3005/reviews/"
-  private
+private
 	def current_user_email
-		@current_user_email ||= session[:email] if session[:email]
-	end 
+    @current_user_email ||= session[:email] if session[:email]
+  end 
   helper_method :current_user_email
 end

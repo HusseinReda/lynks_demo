@@ -11,15 +11,6 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160720210734) do
-
-  create_table "orders", force: :cascade do |t|
-    t.date     "date"
-    t.string   "status"
-    t.float    "total"
-    t.integer  "user_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
+ActiveRecord::Schema.define(version: 0) do
 
 end

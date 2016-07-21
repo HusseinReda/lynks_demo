@@ -71,13 +71,13 @@ class ItemsController < ApplicationController
 
   def query
     item = Item.find(params['item_id'])
-    in_stock = false;
+    enough_quantity = false;
     if item
-      if item.quantity > 0
-        in_stock = true
+      if item.quantity >= Integer(params['quantity'])
+        enough_quantity = true
       end
     end
-    render :json => {:in_stock => in_stock}
+    render :json => {:enough_quantity => enough_quantity}
   end
 
   private

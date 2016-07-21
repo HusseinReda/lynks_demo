@@ -18,7 +18,6 @@ class UsersController < ApplicationController
           :password => params[:user][:password] ,
           :address => params[:user][:address],
           :phone_number => params[:user][:phone_number],
-          :user_name => params[:user][:user_name]
         }
       }.to_json 
     
@@ -65,6 +64,6 @@ class UsersController < ApplicationController
 
   private
     def user_params
-      params.require(:user).permit(:first_name, :last_name, :gender, :security_question, :answer, :email, :password, :address, :phone_number, :user_name)
+      params.require(:user).permit(:first_name, :last_name, :gender, :security_question, :answer, :email, :password, :address, :phone_number)
     end
 end

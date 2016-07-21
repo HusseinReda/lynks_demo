@@ -1,13 +1,12 @@
 class UsersController < ApplicationController
   def new
+    if current_user_email 
+      redirect_to STREAM_URL+'show', notice: "You're already logged in"
+    end
   end
 
   def signup
-    if current_user_email
-      respond_to do |format|
-        format.html { redirect_to STREAM_URL+'show', notice: "logged in successfully" } and return 
-      end
-    end
+    
     request_body = { :user =>{
           :first_name => params[:user][:first_name],
           :last_name => params[:user][:last_name],

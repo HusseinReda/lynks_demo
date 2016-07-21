@@ -1,4 +1,12 @@
 Rails.application.routes.draw do
+  get 'reviews/new'
+
+  get 'reviews/create'
+
+  get 'reviews/edit'
+
+  get 'reviews/delete'
+
   get 'users/new'
 
   post 'users/signup'

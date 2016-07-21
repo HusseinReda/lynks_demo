@@ -24,6 +24,9 @@
 			<td>
 				<%= link_to "Add to Cart" , {:controller => 'stream', :action => 'add_to_cart', :user_id => 1, :item_id => item['id'], :quantity => 1, :price => item['price']} %>
 			</td>
+			<td>
+				&nbsp&nbsp&nbsp<%= link_to "Add review" , {:controller => 'reviews', :action => 'new'} %>
+			</td>
 		</tr>
 	</table>
 	<br/>

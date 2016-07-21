@@ -21,7 +21,7 @@ class UsersController < ApplicationController
       }.to_json 
     
     response = RestClient.post AUTH_URL+'signup', request_body ,:content_type => :json , :accept => :json
-    $response_body=JSON.parse(response)
+    $user_create_response_body=JSON.parse(response)
     if response.code == 201
       redirect_to users_login_path
     else

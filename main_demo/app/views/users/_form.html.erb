@@ -1,18 +1,18 @@
 <%= form_for :user, url: users_signup_path do |f| %>
-  <% if $response_body %>
-    <% if $response_body['created'] %>
+  <% if $user_create_response_body %>
+    <% if $user_create_response_body['created'] %>
     <% else %>
       <div id="error_explanation">
-        <h2><%= pluralize($response_body.count, "error") %> prohibited this user from being saved:</h2>
+        <h2><%= pluralize($user_create_response_body.count, "error") %> prohibited this user from being saved:</h2>
         <ul>
-        <% $response_body.each do |key,value | %>
+        <% $user_create_response_body.each do |key,value | %>
           <li><%= "#{key}: #{value[0]}" %></li>
         <% end %>
         </ul>
       </div>
     <% end %>
   <% end %>
-  <% $response_body = nil %>
+  <% $user_create_response_body = nil %>
   <div class="field">
     <%= f.label :first_name %><br>
     <%= f.text_field :first_name %>

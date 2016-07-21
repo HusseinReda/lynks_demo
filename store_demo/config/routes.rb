@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
 
+  get 'reviews/new'
+
+  get 'reviews/create'
+
+  get 'reviews/edit'
+
+  get 'reviews/delete'
+
   get '/items/query', to: 'items#query'
 
   resources :item_reviews, except: [:new, :edit]

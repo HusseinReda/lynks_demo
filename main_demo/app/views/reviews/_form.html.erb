@@ -1,0 +1,27 @@
+<%= form_for :review, url: reviews_create_path do |f| %>
+  <% if $review_create_response_body %>
+    <% if $review_create_response_body['created'] %>
+    <% else %>
+      <div id="error_explanation">
+        <h2><%= pluralize($review_create_response_body.count, "error") %> prohibited this reviews_create_path from being saved:</h2>
+        <ul>
+        <% $review_create_response_body.each do |key,value | %>
+          <li><%= "#{key}: #{value[0]}" %></li>
+        <% end %>
+        </ul>
+      </div>
+    <% end %>
+  <% end %>
+  <% $user_create_response_body = nil %>
+  <div class="field">
+    <%= f.label :body %><br>
+    <%= f.text_area :body %>
+  </div>
+  <div class="field">
+    <%= f.label :rating %><br>
+    <%= f.text_field :rating %>
+  </div>
+  <div class="actions">
+    <%= f.submit %>
+  </div>
+<% end %>
